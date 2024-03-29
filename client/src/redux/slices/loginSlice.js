@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import axios from 'axios';
-import loginInputsControl from './loginInputsControl';
+import loginInputsControl from '../controls/loginInputsControl';
 
 
 const initialState = {

@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState } from './loginSlice';
+import { setLoginState } from '../redux/slices/loginSlice';
 
 const Login = () => {
   const dispatch = useDispatch();

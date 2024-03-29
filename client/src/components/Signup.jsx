@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSignupState } from './signupSlice';
+import { setSignupState } from '../redux/slices/signupSlice';
 
 const Signup = () => {
   const dispatch = useDispatch();
