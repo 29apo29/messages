@@ -1,16 +1,18 @@
 import { Box, Container, Drawer, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MiniUser from './MiniUser';
 import Message from './Message';
-import SearchIcon from '@mui/icons-material/Search'
+import SearchIcon from '@mui/icons-material/Search';
+import { socket } from '../helper/socket';
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const drawerUpdate = (status) => () => {
     setIsOpen(status)
   }
+
   return (
-    <Container sx={{ display: 'flex',maxHeight:'100vh' }} flexDirection="row">
+    <Container sx={{ display: 'flex', maxHeight: '100vh' }} flexDirection="row">
       <Box
         width={{
           xs: '0%',
@@ -32,8 +34,8 @@ const Dashboard = () => {
               xs: 'block',
               md: 'none'
             },
-            overflow:'hidden',
-            overflowY:'scroll'
+            overflow: 'hidden',
+            overflowY: 'scroll'
           }} onClose={drawerUpdate(false)}>
 
           <Grid sx={{ pl: 4, pr: 4, pt: 4 }} container rowSpacing={0} flexDirection={{ xs: 'column' }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -51,18 +53,18 @@ const Dashboard = () => {
         </Drawer>
 
         <Grid
-        id="usersOuterBox"
-        sx={{
-          pl: 2, pr: 2,
-          display: {
-            xs: 'none',
-            md: 'flex'
-          },
-          maxHeight:'100vh',
-          overflow:'hidden',
-          overflowY:'scroll',
-          width:'100%'
-        }} container flexDirection='row' columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          id="usersOuterBox"
+          sx={{
+            pl: 2, pr: 2,
+            display: {
+              xs: 'none',
+              md: 'flex'
+            },
+            maxHeight: '100vh',
+            overflow: 'hidden',
+            overflowY: 'scroll',
+            width: '100%'
+          }} container flexDirection='row' columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item margin={{ xs: 1, md: 1 }} width="90%" ><SearchBar /></Grid>
           <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
           <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />

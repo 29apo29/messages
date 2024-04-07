@@ -1,5 +1,7 @@
 const express = require('express');
 const route = express.Router();
-const asyncHandler = require('express-async-handler');
+const { signup } = require('../controler/router/auth');
 
-route.post('login',)
+route.post('/signup',signup);
+
+module.exports = route;

@@ -1,9 +1,10 @@
 import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, Avatar, List, ListItem, ListItemText, Grid, InputLabel, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import '../styles/messages.css';
 import SendIcon from '@mui/icons-material/Send';
 import MenuIcon from '@mui/icons-material/Menu';
+import { socket } from '../helper/socket';
 
 
 const Message = ({ drawerUpdate }) => {
@@ -17,6 +18,28 @@ const Message = ({ drawerUpdate }) => {
 }
 
 const NewMessage = () => {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    socket.on('connection', onConnect);
+    socket.emit('room', '2');
+    return () => {
+      socket.off('connection', onConnect);
+    };
+  }, []);
+
+  const sendMessage = e => {
+    socket.emit('chat', { name: 'a', message: "Iamhere" });
+  }
   return (
     <>
       <Box sx={{ p: 1 }}>
@@ -30,7 +53,7 @@ const NewMessage = () => {
                 <IconButton
                   edge="end"
                 >
-                  <SendIcon />
+                  <SendIcon onClick={sendMessage} />
                 </IconButton>
               </InputAdornment>
             }
