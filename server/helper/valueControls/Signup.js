@@ -5,7 +5,7 @@ class Signup {
     this.email = email;
     this.password = password;
   }
-  isReady(){
+  isReady() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const nameRegex = /^[a-zA-Z\s]{3,28}$/;
     return emailRegex.test(this.email) &&
@@ -13,12 +13,9 @@ class Signup {
       (this.username.length >= 6 && this.username.length <= 16) &&
       (this.password.length >= 6 && this.password.length <= 28);
   }
-  getAllValues(){
+  getAllValues() {
     return {
-      name: this.name,
-      username: this.username,
-      email: this.email,
-      password: this.password
+      ...this
     }
   }
 }

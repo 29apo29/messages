@@ -107,7 +107,7 @@ UserSchema.pre('save', function (next) {
 })
 
 AuthorizationSchema.pre('save', function () {
-  const randomHexString = crypto.randomBytes(15).toString('hex');
+  const randomHexString = crypto.randomBytes(25).toString('hex');
 
   const token = crypto
     .createHash("SHA256")

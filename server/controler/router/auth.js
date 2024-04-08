@@ -18,4 +18,9 @@ const signup = asyncHandler(async (req, res, err) => {
   res.json(newUser);
 })
 
+const login = asyncHandler(async (req,res,err)=>{
+  const {username,password} = req.body;
+  
+})
+
 module.exports = { signup };
