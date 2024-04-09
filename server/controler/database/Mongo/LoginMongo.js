@@ -12,16 +12,9 @@ class LoginMongo extends Login {
         return reject(new CustomError("Bad request", 400));
       }
       const user = await User.findOne({
-        $or: [{ username: values.username }, { email: values.username }],
+        $or: [{ username: this.username }, { email: this.username }],
       })
-        .select("+password")
-        .populate({
-          path: "saved",
-          populate: {
-            path: "userid",
-            model: "User",
-          },
-        });
+        .select("+password");
 
       if (!user) {
         return reject(
@@ -37,7 +30,10 @@ class LoginMongo extends Login {
       const newAuthorization = {
         ...super.getForAuthorization()
       }
-      const editedUser = await Note.findOneAndUpdate({ _id: user._id }, { $push: { authorizations: { $each: [newAuthorization], $sort: { createdAt: -1 } } } }, { new: 1 });
+      const editedUser = await User.findOneAndUpdate({ _id: user._id }, { $push: { authorizations: { $each: [newAuthorization], $sort: { createdAt: -1 } } } }, { new: 1 });
+      return resolve({user:editedUser,status:1});
     });
   };
 }
+
+module.exports = LoginMongo;

@@ -5,12 +5,15 @@ const app = express();
 const { PORT } = process.env;
 const http = require('http');
 const route = require('./router');
+const customErrorHandler = require('./middleware/error/errorMiddleware');
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
     origin: '*',
   }
 });
+// database connection
+databaseConnection();
 
 //adding json feature express
 app.use(express.json());
@@ -30,8 +33,7 @@ io.on('connection', (socket) => {
   console.log('user connected');
 })
 
-// database connection
-databaseConnection();
+app.use(customErrorHandler);
 
 //listening the server
 server.listen(PORT, (err) => {

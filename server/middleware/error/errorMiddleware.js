@@ -5,6 +5,11 @@ const CustomError = require("../../helper/error/CustomError");
 const customErrorHandler = (err, req, res, next) => {
   let customError = err;
 
+  console.log(customError);
+  if(customError.message.indexOf('Cannot read properties') != -1){
+    customError = new CustomError("Bad Request", 400);
+  }
+
   if (customError.name == "CastError") {
     customError = new CustomError("Bad Request", 400);
   }

@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const CustomError = require('../../helper/error/CustomError');
 const SignupMongo = require('../database/Mongo/SignupMongo');
+const LoginMongo = require('../database/Mongo/LoginMongo');
 
 
 //signup controler
@@ -19,8 +20,10 @@ const signup = asyncHandler(async (req, res, err) => {
 })
 
 const login = asyncHandler(async (req,res,err)=>{
-  const {username,password} = req.body;
-  
+  const {username,password,info} = req.body;
+  const loginMongo = new LoginMongo(username,password,info);
+  const result = await loginMongo.save();
+  res.json(result);
 })
 
-module.exports = { signup };
+module.exports = { signup,login };
