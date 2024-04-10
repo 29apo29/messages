@@ -1,10 +1,11 @@
 const { checkHashCompare } = require("../general/generalHelpers");
+const crypto = require('crypto');
 
 class Login {
   constructor(username, password, info) {
     this.username = username;
     this.password = password;
-    this.useragent = info.useragent;
+    this.useragent = info.userAgent;
     this.osname = info.os.name;
     this.osplatform = info.os.platform;
     this.devicetype = info.device.type;
@@ -36,6 +37,23 @@ class Login {
   }
   checkPasswords(hashed) {
     return checkHashCompare(this.password, hashed);
+  }
+  generateToken() {
+    const randomHexString = crypto.randomBytes(25).toString("hex");
+
+    const token = crypto
+      .createHash("SHA256")
+      .update(randomHexString)
+      .digest("hex");
+    this.token = token;
+  }
+  generateDates(){
+    this.endat = new Date(new Date().setMonth(new Date().getMonth()+1));
+    this.createdat = new Date();
+  }
+  generateForAuthorization(){
+    this.generateDates();
+    this.generateToken();
   }
 }
 

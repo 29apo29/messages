@@ -1,6 +1,6 @@
 const CustomError = require("../../../helper/error/CustomError");
 const Login = require("../../../helper/valueControls/Login");
-const User = require("../../../model/User");
+const { User, Authorization } = require("../../../model/User");
 
 class LoginMongo extends Login {
   constructor(username, password, info) {
@@ -13,13 +13,12 @@ class LoginMongo extends Login {
       }
       const user = await User.findOne({
         $or: [{ username: this.username }, { email: this.username }],
-      })
-        .select("+password");
+      }).select("+password");
 
       if (!user) {
         return reject(
           new CustomError(
-            "User not founded. Please write a real usernaem or email!",
+            "User not founded. Please write a real username or email!",
             400
           )
         );
@@ -27,11 +26,23 @@ class LoginMongo extends Login {
       if (!super.checkPasswords(user.password)) {
         return reject(new CustomError("Wrong password!", 400));
       }
-      const newAuthorization = {
-        ...super.getForAuthorization()
-      }
-      const editedUser = await User.findOneAndUpdate({ _id: user._id }, { $push: { authorizations: { $each: [newAuthorization], $sort: { createdAt: -1 } } } }, { new: 1 });
-      return resolve({user:editedUser,status:1});
+      super.generateForAuthorization();
+      const newAuthorization = new Authorization({
+        ...super.getForAuthorization(),
+      });
+      const editedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        {
+          $push: {
+            authorizations: {
+              $each: [newAuthorization],
+              $sort: { createdAt: -1 },
+            },
+          },
+        },
+        { new: 1 }
+      );
+      return resolve(editedUser);
     });
   };
 }

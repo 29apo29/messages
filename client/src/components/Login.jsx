@@ -1,13 +1,19 @@
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, Link, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginState } from '../redux/slices/loginSlice';
+import { loginFetch, setLoginState } from '../redux/slices/loginSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
   const state = useSelector(state=>state.login.values);
   const onInpF = (name,value)=>{
     dispatch(setLoginState({name,value}));
+  }
+  const fetchState = useSelector(state=>state.login.forFetch);
+  const onSubmit = e=>{
+    console.log('here')
+    dispatch(loginFetch());
+    e.preventDefault();
   }
   return (
     <Container>
@@ -21,6 +27,7 @@ const Login = () => {
         </Grid>
         <Grid item
           component="form"
+          onSubmit={onSubmit}
           sm={8}
           md={5}>
           <Typography component="h1" variant='h4' sx={{ textAlign: 'center' }}>SIGN IN</Typography>
@@ -48,8 +55,8 @@ const Login = () => {
           type='password' 
           label="Password" />
           <FormControlLabel control={<Checkbox checked={state.rememberme}  onChange={e=>onInpF('rememberme',!state.rememberme)} value="remember" color="primary" />} label="Remember me" />
-          <Button disabled={!state.isReady} variant="contained" color="primary" fullWidth sx={{ mt: 3, mb: 2 }}>
-            Sign In
+          <Button type='submit' disabled={!state.isReady || fetchState.isLoading} variant="contained" color="primary" fullWidth sx={{ mt: 3, mb: 2 }}>
+            Login
           </Button>
           <Grid container justifyContent="space-between" spacing={4}>
             <Grid item>

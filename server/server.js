@@ -7,6 +7,7 @@ const http = require('http');
 const route = require('./router');
 const customErrorHandler = require('./middleware/error/errorMiddleware');
 const server = http.createServer(app);
+const cors = require('cors');
 const io = require("socket.io")(server, {
   cors: {
     origin: '*',
@@ -14,6 +15,8 @@ const io = require("socket.io")(server, {
 });
 // database connection
 databaseConnection();
+
+app.use(cors())
 
 //adding json feature express
 app.use(express.json());

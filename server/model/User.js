@@ -1,44 +1,50 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
-
+const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const AuthorizationSchema = new Schema({
   token: {
     type: String,
-    required: [true, "Authorization token couldn't find."]
+    required: [true, "Authorization token couldn't find."],
   },
   useragent: {
     type: String,
-    required: [true, "UserAgent couldn't find"]
+    required: [true, "UserAgent couldn't find"],
   },
   osname: {
-    type: String
+    type: String,
   },
   osplatform: {
-    type: String
+    type: String,
   },
   devicetype: {
-    type: String
+    type: String,
   },
   devicebrand: {
-    type: String
+    type: String,
   },
   devicemodel: {
-    type: String
+    type: String,
   },
   clienttype: {
-    type: String
+    type: String,
   },
   clientname: {
-    type: String
+    type: String,
   },
   clientengine: {
-    type: String
+    type: String,
+  },
+  createdat:{
+    type:Date,
+    required:true
+  },
+  endat:{
+    type:Date,
+    required:true
   }
-})
-
+});
 
 const UserSchema = new Schema({
   name: {
@@ -47,7 +53,7 @@ const UserSchema = new Schema({
     trim: true,
     minlength: 3,
     maxlength: 28,
-    match: /^[a-zA-Z\s]{3,28}$/
+    match: /^[a-zA-Z\s]{3,28}$/,
   },
   username: {
     type: String,
@@ -55,7 +61,7 @@ const UserSchema = new Schema({
     trim: true,
     minlength: 6,
     maxlength: 16,
-    match: /^[a-z0-9\s]{3,28}$/
+    match: /^[a-z0-9\s]{3,28}$/,
   },
   email: {
     type: String,
@@ -67,54 +73,46 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: [true, "You must type password"],
-    select: false
+    select: false,
   },
   bio: {
-    type: String
+    type: String,
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   resetPasswordToken: {
-    type: String
+    type: String,
   },
   resetPasswordExpire: {
-    type: Date
+    type: Date,
   },
-  authorizations: [AuthorizationSchema]
-})
+  authorizations: [AuthorizationSchema],
+});
 
 UserSchema.methods.getResetPasswordTokenFromUser = function () {
   const { RESET_PASSWORD_EXPIRE } = process.env;
-  const randomHexString = crypto.randomBytes(15).toString('hex');
+  const randomHexString = crypto.randomBytes(15).toString("hex");
 
   const resetPasswordToken = crypto
     .createHash("SHA256")
     .update(randomHexString)
-    .digest("hex")
+    .digest("hex");
 
   this.resetPasswordToken = resetPasswordToken;
   this.resetPasswordExpire = Date.now() + parseInt(RESET_PASSWORD_EXPIRE);
 
   return resetPasswordToken;
-}
+};
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre("save", function (next) {
   if (!this.isModified("password")) next();
   this.password = bcrypt.hashSync(this.password, 10);
   next();
-})
+});
 
-AuthorizationSchema.pre('save', function () {
-  const randomHexString = crypto.randomBytes(25).toString('hex');
-
-  const token = crypto
-    .createHash("SHA256")
-    .update(randomHexString)
-    .digest("hex")
-  this.token = token;
-})
-
-
-module.exports = mongoose.model("User", UserSchema);
+module.exports = {
+  User: mongoose.model("User", UserSchema),
+  Authorization: mongoose.model("Authorization", AuthorizationSchema),
+};
