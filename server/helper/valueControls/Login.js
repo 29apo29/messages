@@ -1,5 +1,6 @@
+const CustomError = require("../error/CustomError");
 const { checkHashCompare } = require("../general/generalHelpers");
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 class Login {
   constructor(username, password, info) {
@@ -15,14 +16,23 @@ class Login {
     this.clientname = info.client.name;
     this.clientengine = info.client.engine;
   }
-  isReady() {
+  isReady(reject) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return (
-      ((this.username.length >= 6 && this.username.length <= 16) ||
-        emailRegex.test(this.username)) &&
-      this.password.length >= 6 &&
-      this.password.length <= 28
-    );
+    if (
+      !(
+        (this.username.length >= 6 && this.username.length <= 16) ||
+        !emailRegex.test(this.username)
+      )
+    ) {
+      reject(new CustomError("Please write a real username or email!", 400));
+    }
+    if (this.password.length < 6 || this.password.length > 28) {
+      reject(new CustomError("Please write a real password!", 400));
+    }
+    if (!this.useragent) {
+      reject(new CustomError("Bad request", 400));
+    }
+    return true;
   }
   getAllValues() {
     return {
@@ -47,11 +57,11 @@ class Login {
       .digest("hex");
     this.token = token;
   }
-  generateDates(){
-    this.endat = new Date(new Date().setMonth(new Date().getMonth()+1));
+  generateDates() {
+    this.endat = new Date(new Date().setMonth(new Date().getMonth() + 1));
     this.createdat = new Date();
   }
-  generateForAuthorization(){
+  generateForAuthorization() {
     this.generateDates();
     this.generateToken();
   }

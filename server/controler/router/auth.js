@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler");
-const CustomError = require("../../helper/error/CustomError");
 const SignupMongo = require("../database/Mongo/SignupMongo");
 const LoginMongo = require("../database/Mongo/LoginMongo");
 

@@ -8,9 +8,7 @@ class LoginMongo extends Login {
   }
   save = async () => {
     return new Promise(async (resolve, reject) => {
-      if (!super.isReady()) {
-        return reject(new CustomError("Bad request", 400));
-      }
+      super.isReady(reject);
       const user = await User.findOne({
         $or: [{ username: this.username }, { email: this.username }],
       }).select("+password");

@@ -8,9 +8,7 @@ class SignupMongo extends Signup {
   }
   save = async () => {
     return new Promise(async (resolve, reject) => {
-      if (!super.isReady()) {
-        return reject(new CustomError('Bad request', 400));
-      }
+      super.isReady(reject);
       const values = super.getAllValues();
       const newUser = await User.create({ ...values });
       resolve(newUser);

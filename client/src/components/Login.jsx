@@ -11,7 +11,6 @@ const Login = () => {
   }
   const fetchState = useSelector(state=>state.login.forFetch);
   const onSubmit = e=>{
-    console.log('here')
     dispatch(loginFetch());
     e.preventDefault();
   }
