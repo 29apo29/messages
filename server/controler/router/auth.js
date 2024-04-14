@@ -5,9 +5,14 @@ const LoginMongo = require("../database/Mongo/LoginMongo");
 //signup controler
 const signup = asyncHandler(async (req, res, err) => {
   //getting the values from body
-  const { name, username, email, password } = req.body;
-
-  const saveObj = new SignupMongo(name, username, email, password);
+  const { name, username, email, password, passwordAgain } = req.body;
+  const saveObj = new SignupMongo(
+    name,
+    username,
+    email,
+    password,
+    passwordAgain
+  );
 
   let newUser = await saveObj.save();
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
-import loginInputsControl from "../controls/loginInputsControl";
+import { loginInputsControl, afterLogin } from "../controls/loginControls";
 import DeviceDetector from "device-detector-js";
 const { REACT_APP_API_URL } = process.env;
 
@@ -36,10 +36,8 @@ export const loginFetch = createAsyncThunk(
     try {
       const res = await axios.post(`${REACT_APP_API_URL}api/auth/login`, value); // post bla bla
       const result = await res.data;
-      console.log(result);
       return result;
     } catch (err) {
-      console.log(err);
       return rejectWithValue(err.response); //if err bla bla
     }
   }
@@ -97,6 +95,8 @@ const loginSlice = createSlice({
       state.forFetch.data = action.payload;
       state.forFetch.error = null;
       state.forFetch.isLoading = false;
+      state.values = {...initialState.values};
+      afterLogin(action.payload)
     });
     builder.addCase(loginFetch.rejected, (state, action) => {
       state.forFetch.error = action.payload;

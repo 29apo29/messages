@@ -21,7 +21,7 @@ class Login {
     if (
       !(
         (this.username.length >= 6 && this.username.length <= 16) ||
-        !emailRegex.test(this.username)
+        emailRegex.test(this.username)
       )
     ) {
       reject(new CustomError("Please write a real username or email!", 400));
