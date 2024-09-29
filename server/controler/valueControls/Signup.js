@@ -1,4 +1,4 @@
-const CustomError = require("../error/CustomError");
+const CustomError = require("../../helper/error/CustomError");
 
 class Signup {
   constructor(name, username, email, password, passwordAgain) {

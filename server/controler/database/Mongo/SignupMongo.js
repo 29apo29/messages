@@ -1,5 +1,5 @@
 const { User } = require("../../../model/User");
-const Signup = require("../../../helper/valueControls/Signup");
+const Signup = require("../../valueControls/Signup");
 
 class SignupMongo extends Signup {
   constructor(name, username, email, password, passwordAgain) {

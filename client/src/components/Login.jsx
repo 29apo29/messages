@@ -10,14 +10,17 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginFetch, setLoginState } from "../redux/slices/loginSlice";
+import { login } from "../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.login.values);
   const fetchState = useSelector((state) => state.login.forFetch);
+  const navigate = useNavigate();
   const onInpF = (name, value) => {
     dispatch(setLoginState({ name, value }));
   };
@@ -25,6 +28,12 @@ const Login = () => {
     dispatch(loginFetch());
     e.preventDefault();
   };
+  useEffect(()=>{
+    if(fetchState.data !== null){
+      dispatch(login(fetchState.data));
+      navigate('/dashboard');
+    }
+  },[fetchState,dispatch,navigate])
   return (
     <Container>
       <Grid container justifyContent="center" sx={{ marginTop: 8 }} spacing={4}>

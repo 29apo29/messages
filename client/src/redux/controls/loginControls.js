@@ -12,8 +12,7 @@ export const loginInputsControl = (values)=>{
   return {isReady,wrongInputs}
 }
 
-export const afterLogin = data => {
-  const tokenAuth = data.user.authorizations.filter(e => e.useragent === window.navigator.userAgent); //getting authorizaton object it has same useragent with the client
-  const token = tokenAuth.slice(-1)[0].token; // if the array has element more than one take the last element's token
-  localStorage.setItem('refresh',token);  // writing token in localstorage
+export const afterLogin = (data,rememberme) => {
+  if(rememberme) localStorage.setItem('refresh',data.token);  // writing token in localstorage
+  else sessionStorage.setItem('refresh',data.token);  // writing token in Sessionstorage
 }

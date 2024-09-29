@@ -107,7 +107,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="4">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -117,7 +117,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="10">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -127,7 +127,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="5">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -137,7 +137,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="6">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -147,7 +147,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="7">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -157,7 +157,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="8">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -167,7 +167,7 @@ const MessagesBar = (messages) => {
             </Grid>
           </Grid>
         </ListItem>
-        <ListItem key="3">
+        <ListItem key="9">
           <Grid container>
             <Grid item xs={12}>
               <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
@@ -219,7 +219,6 @@ const TopBar = ({ drawerUpdate }) => {
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
@@ -269,7 +268,7 @@ const TopBar = ({ drawerUpdate }) => {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Avatar sx={{ width: 48, height: 48 }} alt="Remy Sharp" src="https://pbs.twimg.com/profile_images/1753174045833502720/stwY2NPS_400x400.jpg" />
+              <Avatar sx={{ width: 48, height: 48 }} alt="Remy Sharp" src="./logo512.png" />
             </Box>
           </Toolbar>
         </Container>

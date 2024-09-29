@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { loginInputsControl, afterLogin } from "../controls/loginControls";
-import DeviceDetector from "device-detector-js";
+import getBrowserInfos from "../../helper/browser";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -22,11 +22,7 @@ const initialState = {
 export const loginFetch = createAsyncThunk(
   "loginSlice/loginFetch",
   async (args, { getState, rejectWithValue }) => {
-    const deviceDetector = new DeviceDetector();
-    const info = {
-      ...deviceDetector.parse(window.navigator.userAgent),
-      userAgent: window.navigator.userAgent,
-    };
+    const info = getBrowserInfos();
     const state = getState().login; // getting login state
 
     const value = { ...state.values, info }; // storing state value in new variable
@@ -95,8 +91,8 @@ const loginSlice = createSlice({
       state.forFetch.data = action.payload;
       state.forFetch.error = null;
       state.forFetch.isLoading = false;
+      afterLogin(action.payload,state.values.rememberme);
       state.values = {...initialState.values};
-      afterLogin(action.payload)
     });
     builder.addCase(loginFetch.rejected, (state, action) => {
       state.forFetch.error = action.payload;

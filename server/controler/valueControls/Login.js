@@ -1,6 +1,6 @@
-const CustomError = require("../error/CustomError");
-const { checkHashCompare } = require("../general/generalHelpers");
-const crypto = require("crypto");
+const CustomError = require("../../helper/error/CustomError");
+const { checkHashCompare } = require("../../helper/general/generalHelpers");
+const { accessToken, refreshToken } = require("../token/generateToken");
 
 class Login {
   constructor(username, password, info) {
@@ -49,13 +49,10 @@ class Login {
     return checkHashCompare(this.password, hashed);
   }
   generateToken() {
-    const randomHexString = crypto.randomBytes(25).toString("hex");
-
-    const token = crypto
-      .createHash("SHA256")
-      .update(randomHexString)
-      .digest("hex");
-    this.token = token;
+    this.token = refreshToken({ username: this.username });
+  }
+  generateJwt(name, email) {
+    this.jwt = accessToken({ name, username: this.username, email });
   }
   generateDates() {
     this.endat = new Date(new Date().setMonth(new Date().getMonth() + 1));
@@ -64,6 +61,10 @@ class Login {
   generateForAuthorization() {
     this.generateDates();
     this.generateToken();
+  }
+  getTokens(name, email) {
+    this.generateJwt(name, email);
+    return { jwt: this.jwt, token: this.token };
   }
 }
 

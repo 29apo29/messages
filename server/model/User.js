@@ -109,6 +109,7 @@ UserSchema.methods.getResetPasswordTokenFromUser = function () {
 
 UserSchema.pre("save", function (next) {
   if (!this.isModified("password")) next();
+  console.log('passwrod is modified')
   this.password = bcrypt.hashSync(this.password, 10);
   next();
 });

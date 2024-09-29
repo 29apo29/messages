@@ -12,7 +12,7 @@ const MiniUser = ({ userName, bio, img, last }) => {
         >
           <Grid container>
             <Grid item>
-              <Avatar sx={{ width: { xs: 48, md: 64 }, height: { xs: 48, md: 64 }, margin: 'auto' }} alt="Remy Sharp" src={img ? img : "https://pbs.twimg.com/profile_images/1753174045833502720/stwY2NPS_400x400.jpg"} />
+              <Avatar sx={{ width: { xs: 48, md: 64 }, height: { xs: 48, md: 64 }, margin: 'auto' }} alt="Remy Sharp" src={img ? img : "./logo512.png"} />
               <Typography
                 display={{
                   xs: 'none',

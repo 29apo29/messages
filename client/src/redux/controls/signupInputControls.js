@@ -12,8 +12,8 @@ export const signupInputControls = (state) => {
     wrongInputs.push("username");
   if (state.email.length < 3 || !emailRegex.test(state.email))
     wrongInputs.push("email");
-  if (state.password.length < 6 || state.password.length > 28)
+  if (state.password.length < 8 || state.password.length > 28)
     wrongInputs.push("password");
   if (state.password !== state.passwordAgain) wrongInputs.push("passwordAgain");
-  return { wrongInputs, isReady: wrongInputs.length === 0 ? true : false };
+  return { wrongInputs, isReady: wrongInputs.length === 0 ? true : false }; // I know I don't have to write "?true:false" just I want write it
 };

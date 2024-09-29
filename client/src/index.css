@@ -5,3 +5,11 @@ body {
 *{  
   max-height: calc(100vh - 1px);
 }
+.scroll-invisible div {
+  scrollbar-width: none; /* Firefox için */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ için */
+}
+
+.scroll-invisible div::-webkit-scrollbar {
+  display: none; /* Chrome, Safari ve Edge için */
+}
