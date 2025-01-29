@@ -1,7 +1,7 @@
 export const loginInputsControl = (values)=>{
   let isReady = true;
   let wrongInputs = [];
-  if(values.username.length<6 || values.username.length>16){
+  if(values.username.length<6 || values.username.length>50){
     isReady = false;
     wrongInputs.push('username');
   }

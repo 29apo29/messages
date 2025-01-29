@@ -62,14 +62,17 @@ const UserSchema = new Schema({
     trim: true,
     minlength: 6,
     maxlength: 16,
-    match: /^[a-z0-9\s]{3,28}$/,
+    match: /^[a-z0-9\s]{6,16}$/,
+  },
+  profilephoto: {
+    type: String
   },
   email: {
     type: String,
     required: [true, "You must type email"],
     unique: true,
     lowercase: true,
-    match: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    match: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
   },
   password: {
     type: String,

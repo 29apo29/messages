@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginFetch, setLoginState } from "../redux/slices/loginSlice";
+import { loginFetch, resetLoginFetchState, setLoginState } from "../redux/slices/loginSlice";
 import { login } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +31,7 @@ const Login = () => {
   useEffect(()=>{
     if(fetchState.data !== null){
       dispatch(login(fetchState.data));
+      dispatch(resetLoginFetchState());
       navigate('/dashboard');
     }
   },[fetchState,dispatch,navigate])

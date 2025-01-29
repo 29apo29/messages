@@ -13,3 +13,14 @@ body {
 .scroll-invisible div::-webkit-scrollbar {
   display: none; /* Chrome, Safari ve Edge için */
 }
+
+
+body[data-theme="dark"] {
+  background-color: rgb(15, 18, 20);;
+  color: #ffffff;
+}
+
+body[data-theme="light"] {
+  background-color: #ffffff;
+  color: #000000;
+}

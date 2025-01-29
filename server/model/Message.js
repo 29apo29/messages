@@ -14,12 +14,17 @@ const MessageSchema = new Schema({
   },
   to:{
     type:mongoose.Types.ObjectId,
-    ref:'User',
+    ref:'Room',
     required:[true,"Message must have who write it for who?"]
   },
   createdAt:{
     type:Date,
     required:[true,"Message must have date."]
+  },
+  room:{
+    type:mongoose.Types.ObjectId,
+    ref:'room',
+    required:[true,"Message must have a room."]
   }
 })
 

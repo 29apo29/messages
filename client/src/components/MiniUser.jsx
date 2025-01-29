@@ -2,12 +2,12 @@ import { Avatar, Card, Grid, Typography } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const MiniUser = ({ userName, bio, img, last }) => {
+const MiniUser = ({ username, bio, img, last, link }) => {
   return (
     <Link style={{textDecoration:'none',display:'flex',width:'100%'}} to={`/dashboard`}>
       <Grid item margin={{ xs: 1, md: 3 }} sx={{ textDecoration: 'none' }} >
         <Card
-          sx={{ border: 0 }}
+          sx={{ border: 0, background:'none' }}
           variant='outlined'
         >
           <Grid container>
@@ -19,7 +19,7 @@ const MiniUser = ({ userName, bio, img, last }) => {
                   md: 'block'
                 }}
                 textAlign="center"
-                variant='body1'>{userName ? userName : '29apo29'}</Typography>
+                variant='body1'>{username ? username : '29apo29'}</Typography>
             </Grid>
             <Grid
               Item
@@ -30,7 +30,7 @@ const MiniUser = ({ userName, bio, img, last }) => {
                   md: 'none'
                 }}
                 textAlign="center"
-                variant='body1'>{userName ? userName : '29apo29'}</Typography>
+                variant='body1'>{username ? username : '29apo29'}</Typography>
               <Typography
                 display={{
                   xs: 'none',

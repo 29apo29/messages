@@ -6,8 +6,8 @@ const customErrorHandler = (err, req, res, next) => {
   let customError = err;
 
   //DEBUGGERS;
-  // console.log('MIDDLEWARE');
-  // console.log(customError);
+  console.log('MIDDLEWARE');
+  console.log(customError);
 
   if(customError.message.indexOf('Cannot read properties') != -1){
     customError = new CustomError("Bad Request", 400);

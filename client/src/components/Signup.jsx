@@ -89,7 +89,7 @@ const Signup = () => {
             fullWidth
             id="email"
             name="email"
-            label="Email address or Username"
+            label="Email address"
           />
           <TextField
             helperText={

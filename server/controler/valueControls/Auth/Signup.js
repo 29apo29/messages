@@ -1,9 +1,9 @@
-const CustomError = require("../../helper/error/CustomError");
+const CustomError = require("../../../helper/error/CustomError");
 
 class Signup {
   constructor(name, username, email, password, passwordAgain) {
     this.name = name;
-    this.username = username;
+    this.username = username.toLowerCase().trim();
     this.email = email;
     this.password = password;
     this.passwordAgain = passwordAgain;

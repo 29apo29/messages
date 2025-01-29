@@ -1,25 +1,40 @@
-import { AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, Avatar, List, ListItem, ListItemText, Grid, InputLabel, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import '../styles/messages.css';
-import SendIcon from '@mui/icons-material/Send';
-import MenuIcon from '@mui/icons-material/Menu';
-import { socket } from '../helper/socket';
+import {
+  AppBar,
+  Container,
+  Toolbar,
+  Typography,
+  Box,
+  IconButton,
+  Menu,
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  Grid,
+  InputLabel,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import "../styles/messages.css";
+import SendIcon from "@mui/icons-material/Send";
+import MenuIcon from "@mui/icons-material/Menu";
+import { socket } from "../helper/socket";
 
-
-const Message = ({ drawerUpdate }) => {
+const Message = ({ drawerUpdate, isOpen }) => {
   return (
     <>
-      <TopBar drawerUpdate={drawerUpdate} />
+      <TopBar drawerUpdate={drawerUpdate} isOpen={isOpen}/>
       <MessagesBar />
       <NewMessage />
     </>
-  )
-}
+  );
+};
 
 const NewMessage = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
-
 
   useEffect(() => {
     function onConnect() {
@@ -30,30 +45,30 @@ const NewMessage = () => {
       setIsConnected(false);
     }
 
-    socket.on('connection', onConnect);
-    socket.emit('room', '2');
+    socket.on("connection", onConnect);
+    socket.emit("room", "2");
     return () => {
-      socket.off('connection', onConnect);
+      socket.off("connection", onConnect);
     };
   }, []);
 
-  const sendMessage = e => {
-    socket.emit('chat', { name: 'a', message: "Iamhere" });
-  }
+  const sendMessage = (e) => {
+    socket.emit("chat", { name: "a", message: "Iamhere" });
+  };
   return (
     <>
       <Box sx={{ p: 1 }}>
         {/* <TextField label="Size" id="outlined-size-normal" defaultValue="Normal" /> */}
         <FormControl fullWidth sx={{ m: 0, p: 0 }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-newMessage">Message...</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-newMessage">
+            Message...
+          </InputLabel>
           <OutlinedInput
             id="outlined-adornment-newMessage"
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  edge="end"
-                >
-                  <SendIcon onClick={sendMessage} />
+                <IconButton edge="end" onClick={sendMessage}>
+                  <SendIcon  />
                 </IconButton>
               </InputAdornment>
             }
@@ -62,158 +77,82 @@ const NewMessage = () => {
         </FormControl>
       </Box>
     </>
-  )
-}
+  );
+};
 
 const MessagesBar = (messages) => {
   return (
     <>
-
-      <List id="messagesOuterBox" sx={{
-        maxHeight: '80vh',
-        overflow: "hidden",
-        overflowY: "auto",
-        p: 0
-      }}>
-        <ListItem key="1">
-          <Grid container justifyContent={'end'} >
-            <Grid item sx={{ p: 2 }} >
-              <Grid item xs={12}>
-                <ListItemText align="right" primary="Hey man, What's up ?" ></ListItemText>
-              </Grid>
-              <Grid item xs={12}>
-                <ListItemText align="right" secondary="09:30"></ListItemText>
-              </Grid>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="2">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="left" primary="Hey, Iam Good! What about you ?"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="left" secondary="09:31"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="3">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="4">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="10">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="5">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="6">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="7">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="8">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
-        <ListItem key="9">
-          <Grid container>
-            <Grid item xs={12}>
-              <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
-            </Grid>
-            <Grid item xs={12}>
-              <ListItemText align="right" secondary="10:30"></ListItemText>
-            </Grid>
-          </Grid>
-        </ListItem>
+      <List
+        id="messagesOuterBox"
+        sx={{
+          maxHeight: "80vh",
+          height:"80vh",
+          overflow: "hidden",
+          overflowY: "auto",
+          p: 0,
+        }}
+      >
+        <MessageBox />
       </List>
     </>
-  )
-}
+  );
+};
 
-const TopBar = ({ drawerUpdate }) => {
+const MessageBox = () => {
+  return (
+    <ListItem key="1">
+      <Grid container justifyContent={"end"}>
+        <Grid item sx={{ p: 2 }}>
+          <Grid item xs={12}>
+            <ListItemText
+              align="right"
+              primary="Hey man, What's up ?"
+            ></ListItemText>
+          </Grid>
+          <Grid item xs={12}>
+            <ListItemText align="right" secondary="09:30"></ListItemText>
+          </Grid>
+        </Grid>
+      </Grid>
+    </ListItem>
+  );
+};
+
+const TopBar = ({ drawerUpdate, isOpen }) => {
   const status = false;
   const theme = createTheme({
     palette: {
       primary: {
-        light: '#eeeeee',
-        main: '#9e9e9e',
-        dark: '#212121',
-        contrastText: '#fff',
+        light: "#eeeeee",
+        main: "#9e9e9e",
+        dark: "#212121",
+        contrastText: "#fff",
       },
       secondary: {
-        light: '#ff7961',
-        main: '#f44336',
-        dark: '#ba000d',
-        contrastText: '#000',
+        light: "#ff7961",
+        main: "#f44336",
+        dark: "#ba000d",
+        contrastText: "#000",
       },
     },
   });
   return (
     <ThemeProvider theme={theme}>
-      <AppBar sx={{ bgcolor: status ? '#2e7d32' : 'none' }} position="static">
+      <AppBar sx={{ bgcolor: status ? "#2e7d32" : "none" }} position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <IconButton
               sx={{
                 display: {
-                  xs: 'inline-flex',
-                  md: 'none'
-                }
+                  xs: "inline-flex",
+                  md: "none",
+                },
               }}
-              onClick={drawerUpdate(true)}>
-              <MenuIcon />
+              onClick={drawerUpdate(true)}
+            >
+              <MenuIcon
+              onClick={drawerUpdate(true)} />
             </IconButton>
             <Typography
               variant="h6"
@@ -221,60 +160,67 @@ const TopBar = ({ drawerUpdate }) => {
               component="a"
               sx={{
                 mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
                 fontWeight: 700,
-                color: 'inherit',
-                textDecoration: 'none',
+                color: "inherit",
+                textDecoration: "none",
               }}
             >
               29apo29
             </Typography>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            {/* 
+            WHAT IS THIS???
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <Menu
                 id="menu-appbar"
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 }}
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  display: { xs: "block", md: "none" },
                 }}
-              >
-              </Menu>
-            </Box>
+                open={false}
+              ></Menu>
+            </Box> */}
             <Typography
               variant="h5"
               noWrap
               component="a"
               sx={{
                 mr: 2,
-                display: { xs: 'flex', md: 'none' },
+                display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: 'monospace',
+                fontFamily: "monospace",
                 fontWeight: 700,
-                color: 'inherit',
-                textDecoration: 'none',
+                color: "inherit",
+                textDecoration: "none",
               }}
             >
               29apo29
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            </Box>
+            <Box
+              sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
+            ></Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Avatar sx={{ width: 48, height: 48 }} alt="Remy Sharp" src="./logo512.png" />
+              <Avatar
+                sx={{ width: 48, height: 48 }}
+                alt="Remy Sharp"
+                src="./logo512.png"
+              />
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default Message
+export default Message;

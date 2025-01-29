@@ -5,7 +5,9 @@ const initialState = {
   name: "",
   username: "",
   email: "",
+  profilephoto: "",
   accessToken: "",
+  bio:"",
   exp: null,
 };
 
@@ -14,12 +16,10 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      console.log(payload);
       const { jwt } = payload;
-      const { name, username, email, exp } = openJwt(jwt);
-      const newState = { name, username, accessToken: jwt, email, exp };
+      const { name, username, email, exp, profilephoto, bio } = openJwt(jwt);
+      const newState = { name, username, accessToken: jwt, email, exp, profilephoto, bio };
       state = { ...newState };
-      console.log(state);
       return newState;
     },
     refresh: (state, { payload }) => {
@@ -28,8 +28,17 @@ const authSlice = createSlice({
       state.exp = openJwt(payload).exp;
       return state;
     },
+    editInfo:(state,{payload})=>{
+      state = { ...current(state) };
+      let code = Object.keys(payload)[0];
+      state[code] = payload[code];
+      return state;
+    },
+    exit: () => {
+      return initialState;
+    },
   },
 });
 
-export const { login, refresh } = authSlice.actions;
+export const { login, refresh, exit,editInfo } = authSlice.actions;
 export default authSlice.reducer;

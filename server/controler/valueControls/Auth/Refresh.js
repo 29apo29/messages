@@ -1,7 +1,4 @@
-const CustomError = require("../../helper/error/CustomError");
-const { User } = require("../../model/User");
-const { accessToken } = require("../token/generateToken");
-const { open } = require("../token/openToken");
+const { accessToken } = require("../../token/generateToken");
 
 class Refresh {
   constructor(token,info) {
@@ -16,18 +13,6 @@ class Refresh {
     this.clientname = info.client.name;
     this.clientengine = info.client.engine;
   }
-  async generateJwt() {
-    const username = open(this.token);
-    const user = await User.findOne({ username });
-    const findToken = user.authorizations.find((e) => e.token === this.token);
-    if (!user || !findToken || !this.infoControl(findToken.toObject())) throw new CustomError("Token error", 401);
-    const accToken = accessToken({
-      name: user.name,
-      username: user.username,
-      email: user.email,
-    });
-    return accToken;
-  }
   infoControl(tokenObj){
     let keys = Object.keys(this);
     keys = keys.slice(1,keys.length);
@@ -37,6 +22,14 @@ class Refresh {
       }
     }
     return true;
+  }
+  getToken(){
+    return this.token;
+  }
+  generateJwt(values){
+    return accessToken({
+      ...values
+    });
   }
 }
 

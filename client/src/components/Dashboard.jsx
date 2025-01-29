@@ -13,13 +13,20 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MiniUser from "./MiniUser";
 import Message from "./Message";
 import SearchIcon from "@mui/icons-material/Search";
-import { socket } from "../helper/socket";
-import { Link } from "react-router-dom";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import ContrastIcon from "@mui/icons-material/Contrast";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheme } from "../redux/slices/themeSlice";
+import { exit } from "../redux/slices/authSlice";
+import { removeRefresh } from "../helper/browser";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutFetch, resetLogoutState } from "../redux/slices/logoutSlice";
+import { relatedFetch } from "../redux/slices/relatedSlice";
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,23 +35,16 @@ const Dashboard = () => {
   };
 
   return (
-    <Container sx={{ display: "flex", maxHeight: "100vh" }} flexDirection="row">
+    <Container
+      sx={{ display: "flex", maxHeight: "100vh", height: "100vh" }}
+      flexDirection="row"
+    >
       <Box
         width={{
           xs: "0%",
           md: "34%",
         }}
       >
-        {/* <IconButton
-          sx={{
-            display: {
-              xs: 'inline-flex',
-              md: 'none'
-            }
-          }}
-          onClick={drawerUpdate(true)}>
-          <MenuIcon />
-        </IconButton> */}
         <Drawer
           open={isOpen}
           sx={{
@@ -54,15 +54,22 @@ const Dashboard = () => {
             },
             overflow: "hidden",
             overflowY: "scroll",
+            width:"100%",
+            bgcolor:"red"
           }}
           onClose={drawerUpdate(false)}
           className="scroll-invisible"
+
         >
-          <IconButton color="error" onClick={()=>setIsOpen(0)} sx={{position:'absolute',right:10,top:10}}>
-            <CloseIcon/>
+          <IconButton
+            color="error"
+            onClick={() => setIsOpen(false)}
+            sx={{ position: "absolute", right: 10, top: 10 }}
+          >
+            <CloseIcon />
           </IconButton>
           <Grid
-            sx={{ pl: 4, pr: 4, pt: 4}}
+            sx={{ pl: 4, pr: 4, pt: 4 }}
             container
             rowSpacing={0}
             flexDirection={{ xs: "row" }}
@@ -105,31 +112,28 @@ const Dashboard = () => {
           md: "65%",
         }}
       >
-        <Message drawerUpdate={drawerUpdate} />
+        <Message drawerUpdate={drawerUpdate} isOpen={isOpen}/>
       </Box>
     </Container>
   );
 };
 const Users = () => {
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.auth.accessToken)
+  const state = useSelector(state => state.related.values);
+  const fetchState = useSelector(state => state.related.forFetch);
+  useEffect(()=>{
+    if(state.users === null){
+      if(fetchState.data === null && token !== ''){
+        dispatch(relatedFetch({token}));
+      }
+    }
+  },[state,fetchState,token])
   return (
-    <>
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-      <MiniUser bio="dfgjdsfkgkjdfgjkd" last="sanjdhaskdhas" />
-    </>
+    <Grid sx={{mt:2,width:'100%'}}>
+      { state.users === null || state.users.length === 0 ? <Typography sx={{textAlign:'center'}} textAlign="center" width="100%" variant='body1'> There is no one you are chatting with.</Typography>:
+      state.users.map((user)=><MiniUser username={user.username} bio={user.bio} img={user.profilephoto} link={user.link} last={"sadasd"}  />)}
+    </Grid>
   );
 };
 
@@ -154,76 +158,115 @@ const SearchBar = () => {
 };
 
 const MiniMe = () => {
+  const dispatch = useDispatch();
+  const logoutState = useSelector((state) => state.logout);
+  const authState = useSelector((state) => state.auth);
+  const clickHandler = () => {
+    dispatch(setTheme());
+  };
+  const exitApp = () => {
+    dispatch(logoutFetch({ token: authState.accessToken }));
+  };
+  useEffect(() => {
+    if (logoutState.data !== null) {
+      removeRefresh();
+      dispatch(exit());
+      dispatch(resetLogoutState());
+    }
+  }, [logoutState]);
   return (
-    <Link
-      to="/profile"
-      style={{ width: "100%", textDecoration: "none", margin: "0.5em" }}
-    >
-      <Card sx={{ p: 2 }}>
-        <Grid container>
-          <Grid item>
-            <Avatar
+    <Grid container sx={{ mt: 1 }}>
+      <Link to="/profile" style={{textDecoration:"none", flexGrow: 1}}>
+      <Grid item sx={{ marginRight: 1, flexGrow: 1 }}>
+        <Card sx={{ p: 2 }}>
+          <Grid container>
+            <Grid item>
+              <Avatar
+                sx={{
+                  width: { xs: 48, md: 64 },
+                  height: { xs: 48, md: 64 },
+                  margin: "auto",
+                }}
+                alt={authState.name}
+                src={authState.profilephoto}
+              />
+              <Typography
+                display={{
+                  xs: "none",
+                  md: "block",
+                }}
+                textAlign="center"
+                variant="body1"
+              >
+                {authState.username}
+              </Typography>
+            </Grid>
+            <Grid
+              Item
               sx={{
-                width: { xs: 48, md: 64 },
-                height: { xs: 48, md: 64 },
-                margin: "auto",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                display: "flex",
+                flexDirection: "column",
+                paddingLeft: 2,
+                flexGrow: 8,
               }}
-              alt="Remy Sharp"
-              src="https://pbs.twimg.com/profile_images/1753174045833502720/stwY2NPS_400x400.jpg"
-            />
-            <Typography
-              display={{
-                xs: "none",
-                md: "block",
-              }}
-              textAlign="center"
-              variant="body1"
             >
-              29apo29
-            </Typography>
+              <Typography
+                display={{
+                  xs: "block",
+                  md: "none",
+                }}
+                textAlign="center"
+                variant="body1"
+              >
+                {authState.name}dasdas
+              </Typography>
+              <Typography
+                display={{
+                  xs: "none",
+                  md: "flex",
+                }}
+                variant="body2"
+              >
+                {authState.name}
+              </Typography>
+              <Typography
+                display={{
+                  xs: "none",
+                  md: "flex",
+                }}
+                variant="subtitle2"
+              >
+                {authState.bio}
+              </Typography>
+            </Grid>
           </Grid>
+        </Card>
+
+      </Grid>
+      </Link>
+      <Grid item>
+        <Card sx={{ height: "calc(100% - 16px)", p: 1 }}>
           <Grid
-            Item
             sx={{
-              justifyContent: "center",
-              alignItems: "center",
               display: "flex",
-              flexDirection: "column",
-              paddingLeft: 2,
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
             }}
+            flexDirection={{ xs: "row", md: "column" }}
           >
-            <Typography
-              display={{
-                xs: "block",
-                md: "none",
-              }}
-              textAlign="center"
-              variant="body1"
-            >
-              asdsadsa
-            </Typography>
-            <Typography
-              display={{
-                xs: "none",
-                md: "flex",
-              }}
-              variant="body2"
-            >
-              sadsad
-            </Typography>
-            <Typography
-              display={{
-                xs: "none",
-                md: "flex",
-              }}
-              variant="subtitle2"
-            >
-              sadsad
-            </Typography>
+            <IconButton color="danger" onClick={exitApp}>
+              <ExitToAppIcon />
+            </IconButton>
+            <IconButton onClick={clickHandler}>
+              <ContrastIcon />
+            </IconButton>
           </Grid>
-        </Grid>
-      </Card>
-    </Link>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 

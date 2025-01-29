@@ -1,6 +1,6 @@
-const CustomError = require("../../../helper/error/CustomError");
-const Login = require("../../valueControls/Login");
-const { User, Authorization } = require("../../../model/User");
+const CustomError = require("../../../../helper/error/CustomError");
+const Login = require("../../../valueControls/Auth/Login");
+const { User, Authorization } = require("../../../../model/User");
 
 class LoginMongo extends Login {
   constructor(username, password, info) {
@@ -84,7 +84,15 @@ class LoginMongo extends Login {
       );
       let response = editedUser.toObject(); // mongoose to object
       delete response.password; // delete password from the object
-      return resolve(super.getTokens(response.name,response.email)); // return tokens
+      return resolve(
+        super.getTokens({
+          name: response.name,
+          username: response.username,
+          email: response.email,
+          profilephoto: response.profilephoto,
+          bio:response.bio
+        })
+      ); // return tokens
     });
   };
 }

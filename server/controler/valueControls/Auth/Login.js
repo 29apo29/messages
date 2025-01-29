@@ -1,10 +1,10 @@
-const CustomError = require("../../helper/error/CustomError");
-const { checkHashCompare } = require("../../helper/general/generalHelpers");
-const { accessToken, refreshToken } = require("../token/generateToken");
+const CustomError = require("../../../helper/error/CustomError");
+const { checkHashCompare } = require("../../../helper/general/generalHelpers");
+const { accessToken, refreshToken } = require("../../token/generateToken");
 
 class Login {
   constructor(username, password, info) {
-    this.username = username;
+    this.username = username.toLowerCase().trim();
     this.password = password;
     this.useragent = info.userAgent;
     this.osname = info.os.name;
@@ -51,8 +51,8 @@ class Login {
   generateToken() {
     this.token = refreshToken({ username: this.username });
   }
-  generateJwt(name, email) {
-    this.jwt = accessToken({ name, username: this.username, email });
+  generateJwt(values) {
+    this.jwt = accessToken({...values});
   }
   generateDates() {
     this.endat = new Date(new Date().setMonth(new Date().getMonth() + 1));
@@ -62,8 +62,8 @@ class Login {
     this.generateDates();
     this.generateToken();
   }
-  getTokens(name, email) {
-    this.generateJwt(name, email);
+  getTokens(values) {
+    this.generateJwt(values);
     return { jwt: this.jwt, token: this.token };
   }
 }

@@ -1,8 +1,29 @@
 const jwt = require("jsonwebtoken");
+const { getTokenFromHeader } = require(".");
+const CustomError = require("../../helper/error/CustomError");
+const { JWT_REFRESH_KEY, JWT_KEY } = process.env;
 
-const open = (token) => {
-  const decoded = jwt.verify(token, process.env.JWT_REFRESH_KEY);
+const openRefresh = (token) => {
+  const decoded = open(token, 1);
   return decoded.username;
 };
 
-module.exports = {open};
+const openAccess = (token) => {
+  const decoded = open(token, 0);
+  return decoded.username;
+};
+
+const openReq = (req) => {
+  const token = getTokenFromHeader(req);
+  return openAccess(token);
+};
+
+const open = (token, type) =>{
+  try{
+    return jwt.verify(token, type ? JWT_REFRESH_KEY : JWT_KEY);
+  }catch(e){
+    throw CustomError.unAuthorized();
+  }  
+}
+
+module.exports = { openRefresh, openAccess, openReq };

@@ -1,5 +1,5 @@
-const { User } = require("../../../model/User");
-const Signup = require("../../valueControls/Signup");
+const { User } = require("../../../../model/User");
+const Signup = require("../../../valueControls/Auth/Signup");
 
 class SignupMongo extends Signup {
   constructor(name, username, email, password, passwordAgain) {
@@ -9,7 +9,7 @@ class SignupMongo extends Signup {
     return new Promise(async (resolve, reject) => {
       super.isReady(reject);
       const values = super.getAllValues();
-      User.create({ ...values })
+      await User.create({ ...values })
         .then((newUser) => resolve(newUser))
         .catch((err) => reject(err));
     });
